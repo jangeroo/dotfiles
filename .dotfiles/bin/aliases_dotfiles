@@ -3,14 +3,22 @@
 
 alias dotgit='git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias ,dot='dotgit'
+alias ,,='dotgit'
 
 alias ,dots='dotgit status'
+alias ,,s='dotgit status'
 alias ,dotl='dotgit log'
+alias ,,l='dotgit log'
 alias ,dottracked='dotgit ls-tree -r main --name-only'
+alias ,,tracked='dotgit ls-tree -r main --name-only'
 
 alias ,dota='dotgit add'
+alias ,,a='dotgit add'
 alias ,dotau='dotgit add -u'
+alias ,,au='dotgit add -u'
 
 alias ,dotcm='dotgit commit -m'
+alias ,,cm='dotgit commit -m'
 
 alias ,dotpush='dotgit push origin main'
+alias ,,push='dotgit push origin main'
