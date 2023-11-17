@@ -6,6 +6,7 @@ alias ,dot='dotgit'
 
 alias ,dots='dotgit status'
 alias ,dotl='dotgit log'
+alias ,dottracked='dotgit ls-tree -r main --name-only'
 
 alias ,dota='dotgit add'
 alias ,dotau='dotgit add -u'
