@@ -1,0 +1,6 @@
+[user]
+	name = Michael Jang
+	email = michaeljang86@gmail.com
+[core]
+	editor = code --wait
+	excludesfile = ~/.gitignore
