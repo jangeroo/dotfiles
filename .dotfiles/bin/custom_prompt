@@ -1,2 +1,14 @@
-autoload -U promptinit && promptinit
-prompt fade blue
+. ~/.dotfiles/bin/colours
+
+function precmd() {
+  set_prompt
+}
+
+function set_prompt() {
+  DATE='%D{%a %b %d}'
+  TIME='%D{%L:%M:%S%p}'
+
+  PROMPT="
+${BG_CYAN}${BLUE} %~ ${RESET} $DATE, $TIME
+\$ "
+}

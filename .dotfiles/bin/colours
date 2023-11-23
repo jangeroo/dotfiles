@@ -1,0 +1,27 @@
+# For additional examples of custom .profile, see https://gist.github.com/miki725/9783474
+# For full 256 xterm colours, see https://www.ditig.com/256-colors-cheat-sheet
+
+# COLOURS: escape codes that we can use to color our prompt.
+  RESET="%f%k%b"
+
+# Foreground colours
+  BLACK="%F{0}"
+    RED="%F{1}"
+  GREEN="%F{2}"
+ YELLOW="%F{3}"
+   BLUE="%F{4}"
+MAGENTA="%F{5}"
+   CYAN="%F{6}"
+ SILVER="%F{7}"
+   GREY="%F{8}"
+
+# Background colours
+  BG_BLACK="%K{0}"
+    BG_RED="%K{1}"
+  BG_GREEN="%K{2}"
+ BG_YELLOW="%K{3}"
+   BG_BLUE="%K{4}"
+BG_MAGENTA="%K{5}"
+   BG_CYAN="%K{6}"
+ BG_SILVER="%K{7}"
+   BG_GREY="%K{8}"
