@@ -21,8 +21,10 @@ function set_right_prompt() {
 function set_prompt() {
   set_prompt_symbol
 
+  set_git_branch
+
   PROMPT="
-${BG_CYAN}${BLUE} %~ ${RESET}
+${BG_CYAN}${BLUE} %~ ${RESET}$BRANCH
 ${PROMPT_SYMBOL} "
 }
 
@@ -32,4 +34,9 @@ function set_prompt_symbol() {
   else
     PROMPT_SYMBOL="${RED}\$${RESET}"
   fi
+}
+
+function set_git_branch() {
+  BRANCH=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1) /')
+  BRANCH=${YELLOW}${BG_GREY}$BRANCH${RESET}
 }
