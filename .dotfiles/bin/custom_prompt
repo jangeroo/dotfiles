@@ -1,16 +1,10 @@
 . ~/.dotfiles/bin/colours
 
 function precmd() {
+  LAST_COMMAND_STATUS=$?
   set_right_prompt
   set_prompt
 }
-
-function set_prompt() {
-  PROMPT="
-${BG_CYAN}${BLUE} %~ ${RESET}
-\$ "
-}
-
 
 function set_right_prompt() {
   _LINE_UP=$'\e[1A'
@@ -22,4 +16,20 @@ function set_right_prompt() {
   RIGHT_PROMPT="${GREY}$DATE, $TIME${RESET}"
 
   RPROMPT=%{${_LINE_UP}%}${RIGHT_PROMPT}%{${_LINE_DOWN}%}
+}
+
+function set_prompt() {
+  set_prompt_symbol
+
+  PROMPT="
+${BG_CYAN}${BLUE} %~ ${RESET}
+${PROMPT_SYMBOL} "
+}
+
+function set_prompt_symbol() {
+  if [[ $LAST_COMMAND_STATUS -eq 0 ]]; then
+    PROMPT_SYMBOL="\$"
+  else
+    PROMPT_SYMBOL="${RED}\$${RESET}"
+  fi
 }
