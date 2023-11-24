@@ -21,12 +21,15 @@ We create an aliased command and add it to `.zshrc` to not have to specify these
 
 ## Copying dotfiles to another machine
 ```sh
-git clone \
+$ git clone \
    --separate-git-dir=$HOME/.dotfiles \
    git@github.com:jangeroo/dotfiles.git \
    dotfiles-tmp
-rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/
-rm -rf dotfiles-tmp
+$ rsync --recursive --verbose --exclude '.git' dotfiles-tmp/ $HOME/
+$ rm -rf dotfiles-tmp
+
+# Followed by...
+$ . .dotfiles/setup.sh
 ```
 
 `--separate-git-dir` tells Git that the history should live in `$HOME/.dotfiles` even though the snapshot will live in `dotfiles-tmp` (an arbitrary temporary directory that we’ll delete once we’ve moved the dotfiles into their proper locations).
