@@ -1,0 +1,215 @@
+# GIT aliases
+alias gs='git status'
+# alias gl='git log'
+gl () {
+    git log $@
+}
+
+alias branch='git branch'
+alias br='git branch'
+alias brd='git branch -D'
+alias cbranch='git rev-parse --abbrev-ref HEAD'
+alias brc='git rev-parse --abbrev-ref HEAD'
+
+alias gc='git checkout';
+alias gcb='git checkout -b';
+
+alias gcp='git cherry-pick'
+alias gcpcont='git cherry-pick --continue'
+alias gcpc='git cherry-pick --continue'
+alias grb='git rebase'
+alias grcont='git rebase --continue'
+alias grbc='git rebase --continue'
+
+alias gd='git diff'
+alias gdn='git diff --name-only'
+alias gds='git diff --staged'
+alias gdns='git diff --name-only --staged'
+
+alias ga='git add'
+alias gau='git add -u'
+
+gcm () {
+    git stash -ku
+    git commit -m $1
+    git stash pop >/dev/null
+}
+gcnm () {
+    git stash -ku
+    git commit -n -m $1
+    git stash pop >/dev/null
+}
+alias fixup='gcm "chore: fixup"'
+alias gcfx=fixup
+alias gamend='git commit -n --amend'
+alias conventional_commit_types="echo 'feat, fix, chore, refactor, revert, docs, style, perf, test, build, ci'"
+alias gct='conventional_commit_types'
+
+alias grh='git reset --hard'
+alias gnuke='git reset --hard; git clean -f -d'
+alias nuke='git reset --hard; git clean -f -d'
+
+alias grbm='git rebase master'
+
+squash () {
+    git rebase -i HEAD~$1
+}
+
+rsquash () {
+    git reset --hard
+    git rebase -i HEAD~$1
+}
+
+
+# alias gsquashall='!f(){ git reset $(git commit-tree HEAD^{tree} -m \'${1:-A new start}\');};f'
+# alias gsquashall='git reset $(git commit-tree HEAD^{tree} -m 'A new start')'
+
+alias prune='git fetch --prune --all'
+alias pull='prune; git pull'
+alias gmaster='gc master'
+alias gma='gmaster'
+alias gmp='gc master; pull'
+alias gpm='gc master; pull'
+
+alias gpush='git push origin HEAD'
+alias gpo='git push origin HEAD'
+alias forcegpo='git push --force origin HEAD'
+alias gpj='git push jangeroo HEAD'
+
+alias gtag='git describe --tags --abbrev=0'
+
+alias global_gitnore_file='git config --get core.excludesfile'
+
+alias stash='git stash -ku'
+alias stashm='git stash -ku -m'
+alias stm='git stash -ku -m'
+alias stashl='git stash list'
+alias stl='git stash list'
+alias stashf='git stash push -m'
+# USAGE: stashf 'describe changes to filename.ext' filename.ext
+
+stash_apply () {
+    if [[ "$1" = <-> ]] then
+        git stash apply stash@{$1}
+    else
+        git stash apply stash^{/$1}
+    fi
+}
+alias sta='stash_apply'
+alias stapply='stash_apply'
+alias stasha='stash_apply'
+
+stash_pop () {
+    if [[ "$1" = <-> ]] then
+        index=$1
+    else
+        index=0
+    fi
+
+    message=$(get_stash_message $index)
+
+    case "$message" in
+        # a list of possible substrings to use for stashes to keep
+        (*KEEP* | *___*)
+            echo "‼️‼️  This is a stash you want to keep: $message"
+            echo "Appling stash instead of popping it..."
+            echo
+            git stash apply $index
+            ;;
+        *)
+            git stash pop $index
+            ;;
+    esac
+}
+alias stashp='stash_pop'
+alias stp='stash_pop'
+
+stshow () {
+    if [[ "$1" = <-> ]] then
+        git stash show -p stash@{$1}
+    else
+        git stash show -p stash^{/$1}
+    fi
+}
+
+get_stash_message () {
+    message=$(git stash list | grep "{$1}" | cut -d ':' -f 2- | cut -d ':' -f 2-)
+    message="${message:1}"
+    echo $message
+}
+
+dropstash () {
+    if [[ "$1" != <-> ]] then
+        echo "You must provide the index of the stash you want to drop."
+        return 1
+    fi
+
+    # abort if it's one of the stashes i want to save
+    message=$(get_stash_message $1)
+    case "$message" in
+        (*KEEP* | *___*)
+            echo "‼️‼️  This is a stash you want to keep: $message"
+            echo "Aborting operation."
+            return
+            ;;
+        *)
+            ;;
+    esac
+
+    echo "Are you sure you want to drop stash@{$1}? Enter \"Yes I'm sure\" if you're sure."
+    read confirmation
+    if [[ $confirmation == "Yes I'm sure" ]] then
+        git stash drop stash@{$1}
+    else
+        echo "Drop stash cancelled. stash@{$1} was not dropped."
+        echo "If you want to drop stash@{$1}, try again and enter 'Yes'"
+    fi
+}
+
+stash_replace () {
+    n=$1
+    message=$(git stash list | grep "stash@{$n}" | cut -d ":" -f 3-)
+    git stash drop stash@{$n}
+    git stash -ku -m $message
+}
+alias strepl='stash_replace'
+
+alias hooks='code .git/hooks'
+
+get_latest_tag_for () {
+  # Fetches the latest version tag for the specified git repository
+  # @args
+  #   $1: path of the git repository
+
+  git_repository=$1
+  cd $git_repository
+
+  # save current state
+  branch=$(git branch --show-current)
+  git stash &>/dev/null
+
+  git checkout master &>/dev/null
+  git fetch --prune --all &>/dev/null
+  git pull &>/dev/null
+  version=$(git describe --tags --abbrev=0)
+  version=${version:1}
+  echo "$version"
+
+  # restore saved state
+  git checkout $branch &>/dev/null
+  git stash pop &>/dev/null
+}
+
+set_up_branch () {
+  # @args
+  #   $1: name of the branch to use
+  echo "⊢ Setting up branch...\n"
+
+  git checkout master &>/dev/null
+  git fetch --prune --all &>/dev/null
+  git pull &>/dev/null
+  git checkout . &>/dev/null
+  git branch -D $1 &>/dev/null
+  git push origin --delete $1 &>/dev/null
+  git checkout -b $1 &>/dev/null
+}
