@@ -1,0 +1,15 @@
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Windows system files
+Thumbs.db
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.swp
+
+# Ignore compiled binaries
+*.o
+*.pyc
+node_modules/

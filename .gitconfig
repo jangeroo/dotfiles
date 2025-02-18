@@ -3,4 +3,4 @@
 	email = michaeljang86@gmail.com
 [core]
 	editor = code --wait
-	excludesfile = ~/.gitignore
+	excludesfile = /Users/michaeljang/.gitignore_global
