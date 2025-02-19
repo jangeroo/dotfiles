@@ -7,10 +7,16 @@ alias ,,='dotgit'
 
 alias ,dots='dotgit status'
 alias ,,s='dotgit status'
+alias ,,su='dotgit status --untracked-files=no'
 alias ,dotl='dotgit log'
 alias ,,l='dotgit log'
 alias ,dottracked='dotgit ls-tree -r main --name-only'
 alias ,,tracked='dotgit ls-tree -r main --name-only'
+
+alias ,dotd='dotgit diff'
+alias ,dotdn='dotgit diff --name-only'
+alias ,,d='dotgit diff'
+alias ,,dn='dotgit diff --name-only'
 
 alias ,dota='dotgit add'
 alias ,,a='dotgit add'
