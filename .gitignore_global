@@ -6,6 +6,7 @@ Thumbs.db
 
 # Ignore IDE files
 .vscode/
+*.code-workspace
 .idea/
 *.swp
 
