@@ -19,7 +19,31 @@ This repo was created following the following commands:
 We create an aliased command and add it to `.zshrc` to not have to specify these options manually on every change to the repo.
 
 
-## Copying dotfiles to another machine
+## Set up dotfiles on another machine
+### Prepare machine for accessing Github
+```sh
+$ ssh-keygen -t ed25519 -C "michaeljang86@gmail.com"
+# Type Enter to use default file location
+# Enter a passphrase
+
+$ eval "$(ssh-agent -s)"
+
+$ touch ~/.ssh/config
+$ printf "Host github.com\n  AddKeysToAgent yes\n  UseKeychain yes\n  IdentityFile ~/.ssh/id_ed25519\n" >> ~/.ssh/config
+
+$ ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+# Enter passphrase at prompt
+
+$ pbcopy < ~/.ssh/id_ed25519.pub
+$ open https://github.com/settings/ssh/new
+# Enter a Title, paste SSH key and save
+
+$ ssh -o StrictHostKeyChecking=accept-new -T git@github.com
+
+$ sudo xcode-select --install
+```
+
+### Clone dotfiles
 ```sh
 $ git clone \
    --separate-git-dir=$HOME/.dotfiles \
